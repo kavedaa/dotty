@@ -3,7 +3,7 @@ layout: doc-page
 title: "Context Instances"
 ---
 
-Context instance definitions define context values of given types
+Context instance definitions define context-scoped values of given types
 that serve for synthesizing arguments to [context-given parameters](./inferable-params.html). Example:
 
 ```scala
@@ -35,37 +35,37 @@ instances of `Ord[List[T]]` for all types `T` that come with a `Ord[T]` context 
 The `given` clause in `ListOrd` defines a [context-given parameter](./inferable-params.html).
 Context-given parameters are further explained in the next section.
 
-## Anonymous Implied Instances
+## Anonymous Context Instances
 
-The name of an implied instance can be left out. So the implied instance definitions
+The name of a context instance can be left out. So the context instance definitions
 of the last section can also be expressed like this:
 ```scala
-implied for Ord[Int] { ... }
-implied [T] given (ord: Ord[T]) for Ord[List[T]] { ... }
+context for Ord[Int] { ... }
+context [T] given (ord: Ord[T]) for Ord[List[T]] { ... }
 ```
 If the name of an instance is missing, the compiler will synthesize a name from
 the type(s) in the `for` clause.
 
-## Implied Alias Instances
+## Context Alias Instances
 
-An implied alias instance defines an implied instance that is equal to some expression. E.g., assuming a global method `currentThreadPool` returning a value with a member `context`, one could define:
+An context alias instance defines a context instance that is equal to some expression. 
 ```scala
-implied ctx for ExecutionContext = currentThreadPool().context
+context ctx for ExecutionContext = ExecutionContext.global
 ```
-This creates an implied instance `ctx` of type `ExecutionContext` that resolves to the right hand side `currentThreadPool().context`. Each time an implied instance of `ExecutionContext` is demanded, the result of evaluating the right-hand side expression is returned.
+This creates an context instance `ctx` of type `ExecutionContext` that resolves to the right hand side `ExecutionContext.global`. Each time a context instance of `ExecutionContext` is demanded, the result of evaluating the right-hand side expression is returned.
 
 Alias instances may be anonymous, e.g.
 ```scala
-implied for Position = enclosingTree.position
+context for Position = enclosingTree.position
 ```
-An implied alias instance can have type and context parameters just like any other implied instance definition, but it can only implement a single type.
+A context alias instance can have type and context-given parameters just like any other context instance definition, but it can only implement a single type.
 
 ## Syntax
 
-Here is the new syntax of implied instance definitions, seen as a delta from the [standard context free syntax of Scala 3](http://dotty.epfl.ch/docs/internals/syntax.html).
+Here is the new syntax of context instance definitions, seen as a delta from the [standard context free syntax of Scala 3](http://dotty.epfl.ch/docs/internals/syntax.html).
 ```
 TmplDef          ::=  ...
-                  |  ‘implied’ InstanceDef
+                  |  ‘context’ InstanceDef
 InstanceDef      ::=  [id] InstanceParams InstanceBody
 InstanceParams   ::=  [DefTypeParamClause] {InferParamClause}
 InferParamClause ::=  ‘given’ (‘(’ [DefParams] ‘)’ | ContextTypes)
