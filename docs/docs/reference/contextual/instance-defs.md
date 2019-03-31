@@ -3,8 +3,8 @@ layout: doc-page
 title: "Context Instances"
 ---
 
-Context instance definitions define "canonical" values of given types
-that serve for synthesizing arguments to [inferable parameters](./inferable-params.html). Example:
+Context instance definitions define context values of given types
+that serve for synthesizing arguments to [context-given parameters](./inferable-params.html). Example:
 
 ```scala
 trait Ord[T] {
@@ -29,11 +29,11 @@ context ListOrd[T] given (ord: Ord[T]) for Ord[List[T]] {
   }
 }
 ```
-This code defines a trait `Ord` and two implied instance definitions. `IntOrd` defines
-an implied instance for the type `Ord[Int]` whereas `ListOrd[T]` defines implied
-instances of `Ord[List[T]]` for all types `T` that come with an implied `Ord[T]` instance themselves.
-The `given` clause in `ListOrd` defines an [inferable parameter](./inferable-params.html).
-Inferable parameters are further explained in the next section.
+This code defines a trait `Ord` and two context instance definitions. `IntOrd` defines
+a context instance for the type `Ord[Int]` whereas `ListOrd[T]` defines context
+instances of `Ord[List[T]]` for all types `T` that come with a `Ord[T]` context instance themselves.
+The `given` clause in `ListOrd` defines a [context-given parameter](./inferable-params.html).
+Context-given parameters are further explained in the next section.
 
 ## Anonymous Implied Instances
 
