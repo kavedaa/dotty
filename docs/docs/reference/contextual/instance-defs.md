@@ -1,9 +1,9 @@
 ---
 layout: doc-page
-title: "Implied Instances"
+title: "Context Instances"
 ---
 
-Implied instance definitions define "canonical" values of given types
+Context instance definitions define "canonical" values of given types
 that serve for synthesizing arguments to [inferable parameters](./inferable-params.html). Example:
 
 ```scala
@@ -13,12 +13,12 @@ trait Ord[T] {
   def (x: T) > (y: T) = compare(x, y) > 0
 }
 
-implied IntOrd for Ord[Int] {
+context IntOrd for Ord[Int] {
   def compare(x: Int, y: Int) =
     if (x < y) -1 else if (x > y) +1 else 0
 }
 
-implied ListOrd[T] given (ord: Ord[T]) for Ord[List[T]] {
+context ListOrd[T] given (ord: Ord[T]) for Ord[List[T]] {
   def compare(xs: List[T], ys: List[T]): Int = (xs, ys) match {
     case (Nil, Nil) => 0
     case (Nil, _) => -1
